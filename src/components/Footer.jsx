@@ -43,6 +43,17 @@ const Footer = () => (
           <MapPin size={13} className="text-tiger" />
           {SITE.addressLine}
         </a>
+        <a
+          href={SITE.instagramUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 transition-colors hover:text-tiger"
+        >
+          <span className="text-tiger" aria-hidden>
+            IG
+          </span>
+          @{SITE.instagram}
+        </a>
         <p className="inline-flex items-center gap-2 uppercase tracking-wider">
           <Flame size={13} className="text-tiger" />
           Forjando guerreiros desde {SITE.founded}

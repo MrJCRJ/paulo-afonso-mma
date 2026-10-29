@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Medal, ReceiptText } from "lucide-react";
-import { RANKS, RANK_COLORS, SITE } from "@/lib/siteConfig";
+import { MUAY_THAI_GRADES, RANK_COLORS, SITE, getGrade, gradeLabel } from "@/lib/siteConfig";
 import { demoStore } from "@/lib/demoStore";
 import { useAuth } from "@/context/AuthContext";
 import { Reveal, RankChip } from "@/components/Reveal";
@@ -17,9 +17,10 @@ export default function AreaDoAluno() {
     .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
   const payments = demoStore.getPayments();
   const current = graduations[0];
-  const rankIdx = RANKS.indexOf(current?.rank);
-  const nextRank = rankIdx >= 0 && rankIdx < RANKS.length - 1 ? RANKS[rankIdx + 1] : null;
-  const progress = rankIdx >= 0 ? ((rankIdx + 1) / RANKS.length) * 100 : 8;
+  const grade = current ? getGrade(current.rank) || getGrade(current.faixa) : null;
+  const rankIdx = grade ? MUAY_THAI_GRADES.findIndex((g) => g.id === grade.id) : -1;
+  const next = rankIdx >= 0 && rankIdx < MUAY_THAI_GRADES.length - 1 ? MUAY_THAI_GRADES[rankIdx + 1] : null;
+  const progress = rankIdx >= 0 ? ((rankIdx + 1) / MUAY_THAI_GRADES.length) * 100 : 8;
 
   return (
     <div className="min-h-screen bg-onyx px-4 pb-24 pt-28 sm:px-8 lg:px-12">
@@ -66,15 +67,20 @@ export default function AreaDoAluno() {
                 </h3>
                 {current ? (
                   <>
-                    <div className="mt-5 flex items-center gap-3">
-                      <RankChip rank={current.rank} colors={RANK_COLORS[current.rank]} />
+                    <div className="mt-5 flex flex-wrap items-center gap-3">
+                      <RankChip
+                        rank={current.faixa || grade?.faixa}
+                        grau={current.grau ?? grade?.grau}
+                        nivel={current.nivel || grade?.nivel}
+                        colors={RANK_COLORS[current.rank] || (grade && { bg: grade.bg, fg: grade.fg, tip: grade.tip })}
+                      />
                       <span className="text-sm text-zinc-500">{current.modality}</span>
                     </div>
                     <p className="mt-3 text-xs text-zinc-500">Última graduação em {fmtDate(current.date)}</p>
                     <div className="mt-6">
                       <div className="flex justify-between font-mono text-[10px] uppercase tracking-wider text-zinc-500">
-                        <span>{current.rank}</span>
-                        <span>{nextRank || "Topo da pirâmide"}</span>
+                        <span>{gradeLabel({ faixa: current.faixa || grade?.faixa, grau: current.grau ?? grade?.grau })}</span>
+                        <span>{next ? gradeLabel(next) : "Topo da pirâmide"}</span>
                       </div>
                       <div className="mt-2 h-2 bg-zinc-800">
                         <div className="h-full bg-tiger transition-all duration-700" style={{ width: `${progress}%` }} />

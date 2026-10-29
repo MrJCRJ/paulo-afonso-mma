@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight, ChevronRight, Flame, MapPin, Medal, ShieldCheck } from "lucide-react";
-import { SITE, IMG, SCHEDULE, RANK_COLORS } from "@/lib/siteConfig";
+import { SITE, IMG, SCHEDULE, RANK_COLORS, getGrade, gradeLabel } from "@/lib/siteConfig";
 import { demoStore } from "@/lib/demoStore";
 import { Reveal, Eyebrow, SectionTitle, RankChip } from "@/components/Reveal";
 import Seo from "@/components/Seo";
@@ -282,15 +282,28 @@ const Academia = () => (
           </div>
         </Reveal>
         <Reveal delay={0.22}>
-          <div className="mt-8 overflow-hidden border border-zinc-800/80">
+          <p className="mt-6 text-sm text-zinc-400">
+            <strong className="text-zinc-200">{SITE.addressStreet}</strong>
+            <br />
+            {SITE.city} — {SITE.state} · WhatsApp {SITE.phoneDisplay}
+          </p>
+          <div className="mt-4 overflow-hidden border border-zinc-800/80">
             <iframe
-              title="Mapa Paulo Afonso BA"
+              title={`Mapa ${SITE.addressStreet}`}
               src={SITE.mapsEmbed}
               className="h-48 w-full grayscale contrast-125"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
+          <a
+            href={SITE.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex text-xs font-bold uppercase tracking-wider text-tiger hover:text-orange-300"
+          >
+            Instagram @{SITE.instagram}
+          </a>
         </Reveal>
       </div>
     </div>
@@ -320,12 +333,19 @@ const GraduacoesPreview = () => {
         </Link>
       </Reveal>
       <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {items.map((g, i) => (
+        {items.map((g, i) => {
+          const grade = getGrade(g.rank) || getGrade(g.faixa);
+          return (
           <Reveal key={g.id} delay={i * 0.08}>
             <div className="flex h-full flex-col justify-between border border-zinc-800/80 bg-[#121215] p-5 transition-colors hover:border-tiger/50">
-              <div className="flex items-center justify-between">
-                <RankChip rank={g.rank} colors={RANK_COLORS[g.rank]} />
-                <Medal size={18} className="text-tiger" aria-hidden />
+              <div className="flex items-center justify-between gap-2">
+                <RankChip
+                  rank={g.faixa || grade?.faixa || gradeLabel(g.rank)}
+                  grau={g.grau ?? grade?.grau}
+                  nivel={g.nivel || grade?.nivel}
+                  colors={RANK_COLORS[g.rank] || (grade && { bg: grade.bg, fg: grade.fg, tip: grade.tip })}
+                />
+                <Medal size={18} className="shrink-0 text-tiger" aria-hidden />
               </div>
               <div className="mt-8">
                 <p className="font-display text-2xl uppercase tracking-wide text-zinc-50">{g.student_name}</p>
@@ -335,7 +355,8 @@ const GraduacoesPreview = () => {
               </div>
             </div>
           </Reveal>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

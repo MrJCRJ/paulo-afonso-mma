@@ -22,15 +22,29 @@ export const SectionTitle = ({ children, className = "" }) => (
   </h2>
 );
 
-export const RankChip = ({ rank, colors }) => (
-  <span
-    className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider"
-    style={{ background: colors?.bg || "#e4e4e7", color: colors?.fg || "#09090b" }}
-  >
+export const RankChip = ({ rank, colors, grau, nivel }) => {
+  const label = grau ? `${rank} · ${grau}` : rank;
+  return (
     <span
-      className="h-2 w-2 rounded-full"
-      style={{ background: colors?.fg === "#fafafa" ? "#f97316" : "currentColor", opacity: 0.7 }}
-    />
-    {rank}
-  </span>
-);
+      className="inline-flex max-w-full flex-col gap-0.5 rounded-full px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider"
+      style={{ background: colors?.bg || "#e4e4e7", color: colors?.fg || "#09090b" }}
+      title={nivel ? `Nível: ${nivel}` : undefined}
+    >
+      <span className="inline-flex items-center gap-1.5">
+        <span
+          className="relative h-2.5 w-2.5 rounded-full"
+          style={{ background: colors?.bg || "currentColor", boxShadow: `inset 0 0 0 1px ${(colors?.fg || "#09090b")}55` }}
+        >
+          {colors?.tip && (
+            <span
+              className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full"
+              style={{ background: colors.tip, boxShadow: "0 0 0 1px #09090b" }}
+            />
+          )}
+        </span>
+        {label}
+      </span>
+      {nivel && <span className="pl-4 text-[9px] font-semibold tracking-[0.14em] opacity-80">{nivel}</span>}
+    </span>
+  );
+};
