@@ -1,11 +1,11 @@
 import { SEED_GRADUATIONS, SEED_GALLERY, SEED_POSTS, SEED_PAYMENTS_ALUNO } from "./seedData";
 
 const KEYS = {
-  graduations: "paft_graduations_v3",
-  gallery: "paft_gallery_v3",
-  posts: "paft_posts_v4",
-  payments: "paft_payments",
-  enrollments: "paft_enrollments",
+  graduations: "paft_graduations_v5",
+  gallery: "paft_gallery_v6",
+  posts: "paft_posts_v5",
+  payments: "paft_payments_v5",
+  enrollments: "paft_enrollments_v5",
 };
 
 function read(key, fallback) {

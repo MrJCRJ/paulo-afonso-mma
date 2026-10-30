@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { prajiedChipBackground } from "@/lib/siteConfig";
 
 export const Reveal = ({ children, delay = 0, y = 32, className = "", once = true }) => (
   <motion.div
@@ -22,29 +23,25 @@ export const SectionTitle = ({ children, className = "" }) => (
   </h2>
 );
 
-export const RankChip = ({ rank, colors, grau, nivel }) => {
-  const label = grau ? `${rank} · ${grau}` : rank;
+export const RankChip = ({ rank, colors, grau, nivel, label }) => {
+  const tips = colors?.tips || (colors?.tip ? [colors.tip] : null);
+  const chipColors = { bg: colors?.bg, tips };
+  const text = label || (grau ? `${rank} ponta ${String(grau).toLowerCase()}` : rank);
   return (
     <span
       className="inline-flex max-w-full flex-col gap-0.5 rounded-full px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider"
-      style={{ background: colors?.bg || "#e4e4e7", color: colors?.fg || "#09090b" }}
-      title={nivel ? `Nível: ${nivel}` : undefined}
+      style={{ background: prajiedChipBackground(chipColors), color: colors?.fg || "#09090b" }}
+      title={nivel ? `Título: ${nivel}` : undefined}
     >
       <span className="inline-flex items-center gap-1.5">
         <span
-          className="relative h-2.5 w-2.5 rounded-full"
-          style={{ background: colors?.bg || "currentColor", boxShadow: `inset 0 0 0 1px ${(colors?.fg || "#09090b")}55` }}
-        >
-          {colors?.tip && (
-            <span
-              className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full"
-              style={{ background: colors.tip, boxShadow: "0 0 0 1px #09090b" }}
-            />
-          )}
-        </span>
-        {label}
+          className="relative h-2.5 w-5 shrink-0 overflow-hidden rounded-full"
+          style={{ background: prajiedChipBackground(chipColors), boxShadow: `inset 0 0 0 1px ${(colors?.fg || "#09090b")}55` }}
+          aria-hidden
+        />
+        <span className="min-w-0 break-words leading-tight">{text}</span>
       </span>
-      {nivel && <span className="pl-4 text-[9px] font-semibold tracking-[0.14em] opacity-80">{nivel}</span>}
+      {nivel && <span className="pl-6 text-[9px] font-semibold tracking-[0.14em] opacity-80">{nivel}</span>}
     </span>
   );
 };

@@ -45,40 +45,42 @@ export const PLANS = [
 
 /**
  * Graduação Muay Thai — Prajied (nome correto) / Kruang (nome popular no BR).
- * Quadro no estilo CBMTT / IFMA: 16 Khan.
- * - prajied = corda no braço que marca o grau
- * - grau composto (ex.: Amarelo e Branco) = “ponta” / segunda cor
- * - nível = experiência / título
+ * Quadro CBMT / CMTB: 11 prajieds nas cores da bandeira tailandesa.
+ * - prajied = corda no braço
+ * - grau = “ponta” (próxima cor entre um grau e outro)
+ * - nivel = título a partir de Monitor
+ * - tips = cores da ponta no chip (1 ou 2)
  */
+const C = {
+  branco: "#f4f4f5",
+  vermelho: "#dc2626",
+  azulClaro: "#38bdf8",
+  azulEscuro: "#1e3a8a",
+  preto: "#18181b",
+};
+
 export const MUAY_THAI_GRADES = [
-  { id: "khan-1", khan: "1º Khan Nueng", faixa: "Branco", grau: null, nivel: "Iniciante", tempo: "3 meses", bg: "#e4e4e7", fg: "#09090b", tip: null },
-  { id: "khan-2", khan: "2º Khan Song", faixa: "Amarelo", grau: null, nivel: "Iniciante", tempo: "3 meses", bg: "#eab308", fg: "#09090b", tip: null },
-  { id: "khan-3", khan: "3º Khan Sam", faixa: "Amarelo", grau: "Branco", nivel: "Iniciante", tempo: "3 meses", bg: "#eab308", fg: "#09090b", tip: "#fafafa" },
-  { id: "khan-4", khan: "4º Khan Sih", faixa: "Verde", grau: null, nivel: "Iniciante", tempo: "3 meses", bg: "#22c55e", fg: "#09090b", tip: null },
-  { id: "khan-5", khan: "5º Khan Hah", faixa: "Verde", grau: "Branco", nivel: "Intermediário", tempo: "6 meses", bg: "#22c55e", fg: "#09090b", tip: "#fafafa" },
-  { id: "khan-6", khan: "6º Khan Hok", faixa: "Azul", grau: null, nivel: "Intermediário", tempo: "6 meses", bg: "#3b82f6", fg: "#fafafa", tip: null },
-  { id: "khan-7", khan: "7º Khan Jed", faixa: "Azul", grau: "Branco", nivel: "Intermediário", tempo: "6 meses", bg: "#3b82f6", fg: "#fafafa", tip: "#fafafa" },
-  { id: "khan-8", khan: "8º Khan Pad", faixa: "Marrom", grau: null, nivel: "Avançado", tempo: "6 meses", bg: "#7c4a21", fg: "#fafafa", tip: null },
-  { id: "khan-9", khan: "9º Khan Kaoh", faixa: "Marrom", grau: "Branco", nivel: "Avançado", tempo: "6 meses", bg: "#7c4a21", fg: "#fafafa", tip: "#fafafa" },
-  { id: "khan-10", khan: "10º Khan Sib", faixa: "Vermelho", grau: null, nivel: "Avançado", tempo: "6 meses", bg: "#dc2626", fg: "#fafafa", tip: null },
-  { id: "khan-11", khan: "11º Khan Sib Ed", faixa: "Vermelho", grau: "Branco", nivel: "Kru em treinamento", tempo: "12 meses · 18 anos", bg: "#dc2626", fg: "#fafafa", tip: "#fafafa" },
-  { id: "khan-12", khan: "12º Khan Sib Song", faixa: "Preto", grau: null, nivel: "Kru auxiliar", tempo: "24 meses · 20 anos", bg: "#18181b", fg: "#fafafa", tip: null },
-  { id: "khan-13", khan: "13º Khan Sib Sam", faixa: "Preto", grau: "Branco", nivel: "Kru (Professor)", tempo: "36 meses · 22 anos", bg: "#18181b", fg: "#fafafa", tip: "#fafafa" },
-  { id: "khan-14", khan: "14º Khan Sib Sih", faixa: "Prata", grau: null, nivel: "Arjarn (Mestre)", tempo: "Por nomeação", bg: "#a1a1aa", fg: "#09090b", tip: null },
-  { id: "khan-15", khan: "15º Khan Sib Hah", faixa: "Ouro", grau: null, nivel: "Arjarn Yai", tempo: "Por nomeação", bg: "#f59e0b", fg: "#09090b", tip: null },
-  { id: "khan-16", khan: "16º Khan Sib Hok", faixa: "Ouro", grau: "Prata", nivel: "Grão-mestre de honra", tempo: "Por nomeação", bg: "#f59e0b", fg: "#09090b", tip: "#a1a1aa" },
+  { id: "cbmt-1", ordem: 1, faixa: "Branco", grau: null, label: "Branco", nivel: "Praticante", bg: C.branco, fg: "#09090b", tips: null },
+  { id: "cbmt-2", ordem: 2, faixa: "Branco", grau: "Vermelha", label: "Branco ponta vermelha", nivel: "Praticante", bg: C.branco, fg: "#09090b", tips: [C.vermelho] },
+  { id: "cbmt-3", ordem: 3, faixa: "Vermelho", grau: null, label: "Vermelho", nivel: "Praticante", bg: C.vermelho, fg: "#fafafa", tips: null },
+  { id: "cbmt-4", ordem: 4, faixa: "Vermelho", grau: "Azul-claro", label: "Vermelho ponta azul-claro", nivel: "Praticante", bg: C.vermelho, fg: "#fafafa", tips: [C.azulClaro] },
+  { id: "cbmt-5", ordem: 5, faixa: "Azul-claro", grau: null, label: "Azul-claro", nivel: "Praticante", bg: C.azulClaro, fg: "#09090b", tips: null },
+  { id: "cbmt-6", ordem: 6, faixa: "Azul-claro", grau: "Azul-escuro", label: "Azul-claro ponta azul-escuro", nivel: "Monitor", bg: C.azulClaro, fg: "#09090b", tips: [C.azulEscuro] },
+  { id: "cbmt-7", ordem: 7, faixa: "Azul-escuro", grau: null, label: "Azul-escuro", nivel: "Instrutor auxiliar", bg: C.azulEscuro, fg: "#fafafa", tips: null },
+  { id: "cbmt-8", ordem: 8, faixa: "Azul-escuro", grau: "Preta", label: "Azul-escuro ponta preta", nivel: "Instrutor", bg: C.azulEscuro, fg: "#fafafa", tips: [C.preto] },
+  { id: "cbmt-9", ordem: 9, faixa: "Preto", grau: null, label: "Preto", nivel: "Professor", bg: C.preto, fg: "#fafafa", tips: null },
+  { id: "cbmt-10", ordem: 10, faixa: "Preto", grau: "Branca", label: "Preto ponta branca", nivel: "Mestre", bg: C.preto, fg: "#fafafa", tips: [C.branco] },
+  { id: "cbmt-11", ordem: 11, faixa: "Preto", grau: "Branca e vermelha", label: "Preto ponta branca e vermelha", nivel: "Grão-mestre", bg: C.preto, fg: "#fafafa", tips: [C.branco, C.vermelho] },
 ];
 
 export const NIVEIS = [
-  "Iniciante",
-  "Intermediário",
-  "Avançado",
-  "Kru em treinamento",
-  "Kru auxiliar",
-  "Kru (Professor)",
-  "Arjarn (Mestre)",
-  "Arjarn Yai",
-  "Grão-mestre de honra",
+  "Praticante",
+  "Monitor",
+  "Instrutor auxiliar",
+  "Instrutor",
+  "Professor",
+  "Mestre",
+  "Grão-mestre",
 ];
 
 export const GRADUATION_HISTORY = {
@@ -87,13 +89,14 @@ export const GRADUATION_HISTORY = {
   paragraphs: [
     "Na Tailândia o prajied nasceu como amuleto de proteção — pedaço de tecido abençoado, muitas vezes com um pequeno kruang (adorno/sagrado) no cordão — e não como “faixa” de academia. Lutadores experientes podem usar prajied branco sem qualquer relação com nível técnico.",
     "Fora da Tailândia, especialmente no Brasil, o prajied passou a funcionar como graduação (o equivalente didático à faixa). O Kruang, em sentido estrito, é o adorno/equipe; no dia a dia brasileiro os dois nomes acabam misturados nos quadros “KRUANG / PRAJIED”.",
-    "O PA FIGHT TEAM exibe o quadro em Khan (graus) com a cor do Prajied, a segunda cor quando houver (grau/ponta) e o nível/título. Tempos mínimos seguem a referência tradicional IFMA/CBMTT e podem ser confirmados na academia.",
+    "O PA FIGHT TEAM segue o quadro CBMT/CMTB: 11 prajieds nas cores da bandeira tailandesa, com ponta entre um grau e o seguinte, e títulos a partir de Monitor. Critérios de exame e carência são definidos na academia.",
   ],
 };
 
 export function getGrade(idOrFaixa) {
   return (
     MUAY_THAI_GRADES.find((g) => g.id === idOrFaixa) ||
+    MUAY_THAI_GRADES.find((g) => g.label === idOrFaixa) ||
     MUAY_THAI_GRADES.find((g) => g.faixa === idOrFaixa && !g.grau) ||
     null
   );
@@ -105,13 +108,23 @@ export function gradeLabel(grade) {
     const g = getGrade(grade);
     return g ? gradeLabel(g) : grade;
   }
-  return grade.grau ? `${grade.faixa} e ${grade.grau}` : grade.faixa;
+  if (grade.label) return grade.label;
+  return grade.grau ? `${grade.faixa} ponta ${String(grade.grau).toLowerCase()}` : grade.faixa;
+}
+
+/** Fundo do chip: corpo + ponta(s) em ~75/25. */
+export function prajiedChipBackground(gradeOrColors) {
+  const bg = gradeOrColors?.bg || "#e4e4e7";
+  const tips = gradeOrColors?.tips;
+  if (!tips?.length) return bg;
+  if (tips.length === 1) return `linear-gradient(90deg, ${bg} 75%, ${tips[0]} 75%)`;
+  return `linear-gradient(90deg, ${bg} 70%, ${tips[0]} 70%, ${tips[0]} 85%, ${tips[1]} 85%)`;
 }
 
 export const RANKS = MUAY_THAI_GRADES.map((g) => g.id);
 
 export const RANK_COLORS = Object.fromEntries(
-  MUAY_THAI_GRADES.map((g) => [g.id, { bg: g.bg, fg: g.fg, tip: g.tip }]),
+  MUAY_THAI_GRADES.map((g) => [g.id, { bg: g.bg, fg: g.fg, tips: g.tips }]),
 );
 
 export const PIX_KEY = "pagamentos@pafightteam.com";

@@ -343,7 +343,7 @@ const GraduacoesPreview = () => {
                   rank={g.faixa || grade?.faixa || gradeLabel(g.rank)}
                   grau={g.grau ?? grade?.grau}
                   nivel={g.nivel || grade?.nivel}
-                  colors={RANK_COLORS[g.rank] || (grade && { bg: grade.bg, fg: grade.fg, tip: grade.tip })}
+                  colors={RANK_COLORS[g.rank] || (grade && { bg: grade.bg, fg: grade.fg, tips: grade.tips })}
                 />
                 <Medal size={18} className="shrink-0 text-tiger" aria-hidden />
               </div>
@@ -384,7 +384,7 @@ const GaleriaPreview = () => {
           <Reveal key={p.id} delay={i * 0.06} className={i % 2 === 1 ? "translate-y-6" : ""}>
             <img
               src={p.url}
-              alt={p.title}
+              alt=""
               className="aspect-[3/4] w-full border border-zinc-800/80 object-cover transition duration-500 hover:border-tiger/60"
               loading="lazy"
             />

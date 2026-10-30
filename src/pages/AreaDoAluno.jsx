@@ -71,8 +71,9 @@ export default function AreaDoAluno() {
                       <RankChip
                         rank={current.faixa || grade?.faixa}
                         grau={current.grau ?? grade?.grau}
+                        label={grade?.label}
                         nivel={current.nivel || grade?.nivel}
-                        colors={RANK_COLORS[current.rank] || (grade && { bg: grade.bg, fg: grade.fg, tip: grade.tip })}
+                        colors={RANK_COLORS[current.rank] || (grade && { bg: grade.bg, fg: grade.fg, tips: grade.tips })}
                       />
                       <span className="text-sm text-zinc-500">{current.modality}</span>
                     </div>

@@ -22,9 +22,10 @@ function resolveGrade(entry) {
     id: entry.rank || g?.id,
     faixa: entry.faixa || g?.faixa || entry.rank,
     grau: entry.grau ?? g?.grau ?? null,
+    label: entry.label || g?.label,
     nivel: entry.nivel || g?.nivel || "—",
-    khan: g?.khan,
-    colors: RANK_COLORS[entry.rank] || (g ? { bg: g.bg, fg: g.fg, tip: g.tip } : null),
+    ordem: g?.ordem,
+    colors: RANK_COLORS[entry.rank] || (g ? { bg: g.bg, fg: g.fg, tips: g.tips } : null),
   };
 }
 
@@ -51,17 +52,17 @@ export default function Graduacoes() {
   return (
     <div className="min-h-screen bg-onyx px-4 pb-24 pt-28 sm:px-8 lg:px-12">
       <Seo
-        title="Graduação Muay Thai — Prajied"
-        description="Quadro KRUANG / PRAJIED: Khan, cor do prajied, grau e nível no PA FIGHT TEAM."
+        title="Graduação Muay Thai — Prajied CBMT"
+        description="Quadro KRUANG / PRAJIED CBMT: 11 prajieds, ponta e títulos no PA FIGHT TEAM."
       />
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <Eyebrow>Muay Thai · KRUANG / PRAJIED</Eyebrow>
+          <Eyebrow>Muay Thai · KRUANG / PRAJIED · CBMT</Eyebrow>
           <SectionTitle className="mt-3">Graduação no braço</SectionTitle>
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-zinc-400">
             O nome correto é <strong className="text-zinc-100">Prajied</strong> (corda no bíceps). No Brasil o quadro
-            costuma aparecer como <strong className="text-zinc-100">Kruang / Prajied</strong>. Cada etapa é um{" "}
-            <strong className="text-zinc-100">Khan</strong>, com cor, grau (segunda cor) e nível.
+            costuma aparecer como <strong className="text-zinc-100">Kruang / Prajied</strong>. Este site usa o sistema{" "}
+            <strong className="text-zinc-100">CBMT/CMTB</strong>: cor do prajied, ponta e título.
           </p>
         </Reveal>
 
@@ -79,42 +80,46 @@ export default function Graduacoes() {
 
         <Reveal delay={0.1}>
           <div className="mt-12">
-            <Eyebrow>Quadro completo · 16 Khan</Eyebrow>
+            <Eyebrow>Quadro completo · 11 prajieds</Eyebrow>
             <div className="mt-4 overflow-x-auto border border-zinc-800/80">
               <table className="min-w-full text-left text-sm">
                 <thead className="bg-[#0C0C0F] font-mono text-[10px] uppercase tracking-[0.18em] text-tiger">
                   <tr>
-                    <th className="px-4 py-3">Khan</th>
+                    <th className="px-4 py-3">Ordem</th>
                     <th className="px-4 py-3">Prajied</th>
-                    <th className="px-4 py-3">Grau</th>
-                    <th className="px-4 py-3">Nível</th>
-                    <th className="px-4 py-3">Tempo ref.</th>
+                    <th className="px-4 py-3">Ponta</th>
+                    <th className="px-4 py-3">Título</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-800/80">
                   {MUAY_THAI_GRADES.map((g) => (
                     <tr key={g.id} className="bg-[#121215]/hover:bg-tiger/5">
-                      <td className="px-4 py-3 font-mono text-xs text-zinc-400">{g.khan}</td>
+                      <td className="px-4 py-3 font-mono text-xs text-zinc-400">{g.ordem}º</td>
                       <td className="px-4 py-3">
-                        <RankChip rank={g.faixa} grau={g.grau ? `e ${g.grau}` : null} colors={{ bg: g.bg, fg: g.fg, tip: g.tip }} />
+                        <RankChip
+                          rank={g.faixa}
+                          grau={g.grau}
+                          label={g.label}
+                          colors={{ bg: g.bg, fg: g.fg, tips: g.tips }}
+                        />
                       </td>
                       <td className="px-4 py-3 text-zinc-300">{g.grau || "—"}</td>
                       <td className="px-4 py-3 font-semibold text-zinc-100">{g.nivel}</td>
-                      <td className="px-4 py-3 font-mono text-xs text-zinc-500">{g.tempo}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-600">
-              Referência tradicional IFMA/CBMTT — confirme na academia se o quadro do cliente diferir
+            <p className="mt-3 max-w-3xl text-xs leading-relaxed text-zinc-500">
+              Critérios de exame, carência e aprovação são definidos internamente pelo PA FIGHT TEAM com base nas
+              diretrizes da CBMT/CMTB. Confirme detalhes na academia.
             </p>
           </div>
         </Reveal>
 
         <Reveal delay={0.12}>
           <div className="mt-10 space-y-5">
-            <Eyebrow>Por nível</Eyebrow>
+            <Eyebrow>Por título</Eyebrow>
             {NIVEIS.map((nivel) => {
               const grades = MUAY_THAI_GRADES.filter((g) => g.nivel === nivel);
               if (!grades.length) return null;
@@ -126,9 +131,10 @@ export default function Graduacoes() {
                       <RankChip
                         key={g.id}
                         rank={g.faixa}
-                        grau={g.grau ? `e ${g.grau}` : null}
+                        grau={g.grau}
+                        label={g.label}
                         nivel={g.nivel}
-                        colors={{ bg: g.bg, fg: g.fg, tip: g.tip }}
+                        colors={{ bg: g.bg, fg: g.fg, tips: g.tips }}
                       />
                     ))}
                   </div>
@@ -152,7 +158,10 @@ export default function Graduacoes() {
         {groups.length === 0 ? (
           <div className="mt-16 border border-dashed border-zinc-800 p-14 text-center">
             <Award size={40} className="mx-auto text-zinc-600" />
-            <p className="mt-4 font-display text-3xl uppercase text-zinc-300">Nenhum aluno encontrado</p>
+            <p className="mt-4 font-display text-3xl uppercase text-zinc-300">Mural em construção</p>
+            <p className="mt-2 text-sm text-zinc-500">
+              As graduações dos alunos serão publicadas aqui. Treine duro para o próximo exame.
+            </p>
           </div>
         ) : (
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -173,7 +182,7 @@ export default function Graduacoes() {
                       <h3 className="font-display text-3xl uppercase tracking-wide text-zinc-50">{g.name}</h3>
                       <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">
                         {g.current?.modality || "Muay Thai"}
-                        {cur.khan ? ` · ${cur.khan}` : ""}
+                        {cur.ordem ? ` · ${cur.ordem}º` : ""}
                       </p>
                     </div>
                     <div
@@ -189,7 +198,8 @@ export default function Graduacoes() {
                       <div className="mt-2">
                         <RankChip
                           rank={cur.faixa}
-                          grau={cur.grau ? `e ${cur.grau}` : null}
+                          grau={cur.grau}
+                          label={cur.label}
                           nivel={cur.nivel}
                           colors={cur.colors}
                         />
@@ -201,11 +211,11 @@ export default function Graduacoes() {
                         <p className="mt-1 text-xs font-bold text-zinc-100">{cur.faixa}</p>
                       </div>
                       <div>
-                        <p className="font-mono text-[9px] uppercase tracking-wider text-zinc-500">Grau</p>
+                        <p className="font-mono text-[9px] uppercase tracking-wider text-zinc-500">Ponta</p>
                         <p className="mt-1 text-xs font-bold text-zinc-100">{cur.grau || "—"}</p>
                       </div>
                       <div>
-                        <p className="font-mono text-[9px] uppercase tracking-wider text-zinc-500">Nível</p>
+                        <p className="font-mono text-[9px] uppercase tracking-wider text-zinc-500">Título</p>
                         <p className="mt-1 text-xs font-bold text-tiger">{cur.nivel}</p>
                       </div>
                     </div>
@@ -217,7 +227,7 @@ export default function Graduacoes() {
                         const hg = resolveGrade(h);
                         return (
                           <li key={h.id} className="flex items-center justify-between gap-2 text-xs text-zinc-400">
-                            <span className="text-zinc-300">{gradeLabel({ faixa: hg.faixa, grau: hg.grau })}</span>
+                            <span className="text-zinc-300">{gradeLabel({ faixa: hg.faixa, grau: hg.grau, label: hg.label })}</span>
                             <span className="shrink-0">{fmtDate(h.date)}</span>
                           </li>
                         );
