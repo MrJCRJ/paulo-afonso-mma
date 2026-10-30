@@ -146,7 +146,7 @@ const Hero = () => {
         </div>
 
         <motion.div
-          className="order-first lg:order-none"
+          className="hidden lg:block"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
