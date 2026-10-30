@@ -62,14 +62,22 @@ export const SEED_GRADUATIONS = [
 ];
 
 export const SEED_GALLERY = [
-  { id: "p1", url: "/imgs/gallery/muay-thai-arte.jpg", title: "Arte · Disciplina · Resistência", category: "Treinos" },
-  { id: "p2", url: "/imgs/gallery/regras-tatame.jpg", title: "Regras no tatame", category: "Treinos" },
-  { id: "p3", url: "/imgs/gallery/constancia.jpg", title: "Constância", category: "Treinos" },
-  { id: "p4", url: "/imgs/gallery/graduacao-evento.jpg", title: "Graduação Muay Thai", category: "Graduações" },
-  { id: "p5", url: "/imgs/gallery/atleta.jpg", title: "Na academia", category: "Treinos" },
-  { id: "p6", url: "/imgs/gallery/treino-01.jpg", title: "Treino", category: "Treinos" },
-  { id: "p7", url: "/imgs/gallery/treino-03.jpg", title: "Round", category: "Eventos" },
-  { id: "p8", url: "/imgs/gallery/treino-04.jpg", title: "Equipe", category: "Torneios" },
+  { id: "c05", url: "/imgs/cliente/foto-05.jpg", title: "Atleta · PA Fight Team", category: "Treinos" },
+  { id: "c16", url: "/imgs/cliente/foto-16.jpg", title: "Foco no ringue", category: "Treinos" },
+  { id: "c10", url: "/imgs/cliente/foto-10.jpg", title: "Turma juvenil", category: "Treinos" },
+  { id: "c03", url: "/imgs/cliente/foto-03.jpg", title: "Treino no tatame", category: "Treinos" },
+  { id: "c19", url: "/imgs/cliente/foto-19.jpg", title: "Academia", category: "Treinos" },
+  { id: "c09", url: "/imgs/cliente/foto-09.jpg", title: "Equipe no treino", category: "Treinos" },
+  { id: "c13", url: "/imgs/cliente/foto-13.jpg", title: "Round", category: "Eventos" },
+  { id: "c15", url: "/imgs/cliente/foto-15.jpg", title: "Bastidores", category: "Eventos" },
+  { id: "c11", url: "/imgs/cliente/foto-11.jpg", title: "Sparring", category: "Torneios" },
+  { id: "c17", url: "/imgs/cliente/foto-17.jpg", title: "Luta", category: "Torneios" },
+  { id: "c22", url: "/imgs/cliente/foto-22.jpg", title: "Quadro Prajied / Kruang", category: "Graduações" },
+  { id: "c06", url: "/imgs/cliente/foto-06.jpg", title: "Na academia", category: "Treinos" },
+  { id: "c12", url: "/imgs/cliente/foto-12.jpg", title: "Classe", category: "Treinos" },
+  { id: "c18", url: "/imgs/cliente/foto-18.jpg", title: "Preparação", category: "Treinos" },
+  { id: "c21", url: "/imgs/cliente/foto-21.jpg", title: "Equipe", category: "Eventos" },
+  { id: "c07", url: "/imgs/cliente/foto-07.jpg", title: "Treino", category: "Treinos" },
 ];
 
 export const SEED_POSTS = [
@@ -80,7 +88,7 @@ export const SEED_POSTS = [
     body: "Exame de Khan/Prajied (corda no braço). Confirme vaga pelo WhatsApp.",
     date: "2025-12-19",
     location: "Samarino Hotel — Av. Getúlio Vargas, 03",
-    image_url: "/imgs/gallery/graduacao-evento.jpg",
+    image_url: "/imgs/cliente/foto-22.jpg",
   },
   {
     id: "e2",
@@ -89,16 +97,16 @@ export const SEED_POSTS = [
     body: "Sessão de sparring com proteção completa. Inscrições na recepção ou pelo WhatsApp.",
     date: "2026-11-08",
     location: "PA FIGHT TEAM — Av. Landulfo Alves, 182",
-    image_url: "/imgs/gallery/regras-tatame.jpg",
+    image_url: "/imgs/cliente/foto-10.jpg",
   },
   {
     id: "n1",
     type: "news",
     title: "Vídeos no @pafight_team",
-    body: "Reels e treinos da Equipe Mendonça Júnior no Instagram — abra o perfil para assistir.",
+    body: "Reels e treinos da Equipe Mendonça Júnior — assista na galeria ou no Instagram.",
     date: "2026-10-20",
     location: "",
-    image_url: "/imgs/gallery/constancia.jpg",
+    image_url: "/imgs/cliente/foto-05.jpg",
   },
 ];
 

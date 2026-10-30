@@ -2,8 +2,8 @@ import { SEED_GRADUATIONS, SEED_GALLERY, SEED_POSTS, SEED_PAYMENTS_ALUNO } from 
 
 const KEYS = {
   graduations: "paft_graduations_v3",
-  gallery: "paft_gallery_v2",
-  posts: "paft_posts_v3",
+  gallery: "paft_gallery_v3",
+  posts: "paft_posts_v4",
   payments: "paft_payments",
   enrollments: "paft_enrollments",
 };

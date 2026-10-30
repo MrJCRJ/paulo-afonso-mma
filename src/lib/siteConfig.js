@@ -119,23 +119,40 @@ export const PIX_NAME = "PA FIGHT TEAM";
 export const PIX_CITY = "PAULO AFONSO";
 
 export const IMG = {
-  hero: "/imgs/gallery/constancia.jpg",
-  muaythai: "/imgs/gallery/muay-thai-arte.jpg",
+  hero: "/imgs/cliente/foto-05.jpg",
+  muaythai: "/imgs/cliente/foto-16.jpg",
   boxe: "/imgs/1526792903869-f3035bfc7f29.jpg",
-  gym: "/imgs/gallery/regras-tatame.jpg",
-  victory: "/imgs/gallery/graduacao-evento.jpg",
-  arena: "/imgs/gallery/muay-thai-arte.jpg",
+  gym: "/imgs/cliente/foto-19.jpg",
+  victory: "/imgs/cliente/foto-22.jpg",
+  arena: "/imgs/cliente/foto-03.jpg",
   gloves: "/imgs/gloves.jpg",
-  atleta: "/imgs/gallery/atleta.jpg",
+  atleta: "/imgs/cliente/foto-05.jpg",
 };
 
-/** Capas de vídeos do Instagram — abrem o perfil (CDN bloqueia download sem login). */
-export const IG_VIDEO_COVERS = [
-  { id: "v1", title: "Treino / reel", cover: "/imgs/gallery/treino-01.jpg", href: "https://www.instagram.com/pafight_team/" },
-  { id: "v2", title: "Bastidores", cover: "/imgs/gallery/treino-03.jpg", href: "https://www.instagram.com/pafight_team/" },
-  { id: "v3", title: "Equipe", cover: "/imgs/gallery/atleta.jpg", href: "https://www.instagram.com/pafight_team/" },
-  { id: "v4", title: "Arena", cover: "/imgs/gallery/treino-04.jpg", href: "https://www.instagram.com/pafight_team/" },
+/** Vídeos locais (reel IG + vídeo do cliente) — reprodução na galeria. */
+export const LOCAL_VIDEOS = [
+  {
+    id: "v-treino",
+    title: "Treino · academia",
+    src: "/videos/cliente-treino.mp4",
+    cover: "/imgs/cliente/poster-cliente-treino.jpg",
+  },
+  {
+    id: "v-reel",
+    title: "Reel · Instagram",
+    src: "/videos/reel-CkA-2jRj2ks.mp4",
+    cover: "/imgs/cliente/poster-reel.jpg",
+    href: "https://www.instagram.com/reel/CkA-2jRj2ks/",
+  },
 ];
+
+/** Alias legado */
+export const IG_VIDEO_COVERS = LOCAL_VIDEOS.map((v) => ({
+  id: v.id,
+  title: v.title,
+  cover: v.cover,
+  href: v.href || SITE.instagramUrl,
+}));
 
 export const SCHEDULE = [
   { days: "Seg, Qua e Sex", modality: "Muay Thai", time: "19h — 20h30", level: "Todos os níveis" },
