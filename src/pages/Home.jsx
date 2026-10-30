@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { ArrowRight, ChevronRight, Flame, MapPin, Medal, ShieldCheck } from "lucide-react";
 import { SITE, IMG, HERO_VIDEO, SCHEDULE, RANK_COLORS, getGrade, gradeLabel } from "@/lib/siteConfig";
 import { demoStore } from "@/lib/demoStore";
@@ -8,7 +8,6 @@ import { Reveal, Eyebrow, SectionTitle, RankChip } from "@/components/Reveal";
 import Seo from "@/components/Seo";
 
 const heroLines = ["FORJA DE", "GUERREIROS"];
-const LOGO_INTRO_MS = 2600;
 
 const Marquee = () => {
   const items = ["Equipe Mendonça Júnior", "Muay Thai", "Boxe", "Paulo Afonso — Bahia", `Desde ${SITE.founded}`];
@@ -30,25 +29,63 @@ const Marquee = () => {
   );
 };
 
+const Logo3D = ({ mouseRX, mouseRY }) => (
+  <div className="relative mx-auto aspect-square w-full max-w-[260px] sm:max-w-sm lg:max-w-md" style={{ perspective: 1400 }}>
+    <div className="pointer-events-none absolute inset-[12%] rounded-full bg-tiger/25 blur-3xl" aria-hidden />
+    <motion.div
+      className="relative flex h-full w-full items-center justify-center"
+      style={{ transformStyle: "preserve-3d", rotateX: mouseRX, rotateY: mouseRY }}
+    >
+      <motion.div
+        className="absolute inset-0 rounded-full border border-dashed border-tiger/45"
+        style={{ transformStyle: "preserve-3d" }}
+        animate={{ rotateZ: 360 }}
+        transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+      />
+      <motion.div
+        className="absolute inset-[7%] rounded-full border border-tiger/25"
+        style={{ transformStyle: "preserve-3d" }}
+        animate={{ rotateZ: -360 }}
+        transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+      />
+      <motion.div
+        className="relative flex h-[78%] w-[78%] items-center justify-center"
+        style={{ transformStyle: "preserve-3d" }}
+        animate={{
+          rotateY: [-24, 24, -24],
+          rotateX: [12, -10, 12],
+          y: [0, -18, 0],
+          scale: [1, 1.04, 1],
+        }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <img
+          src="/logo.jpg"
+          alt="Logo PA FIGHT TEAM — tigre, Muay Thai e Boxe"
+          className="h-full w-full rounded-full object-cover shadow-[0_20px_60px_rgba(0,0,0,0.55),0_0_80px_rgba(249,115,22,0.4)] ring-1 ring-tiger/50"
+          draggable={false}
+        />
+        <span
+          className="pointer-events-none absolute inset-0 rounded-full"
+          style={{
+            background: "linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 42%, transparent 58%, rgba(0,0,0,0.35) 100%)",
+            transform: "translateZ(1px)",
+          }}
+          aria-hidden
+        />
+      </motion.div>
+    </motion.div>
+  </div>
+);
+
 const Hero = () => {
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 60, damping: 18 });
-  const sy = useSpring(my, { stiffness: 60, damping: 18 });
-  const rotateY = useTransform(sx, [-0.5, 0.5], [-10, 10]);
-  const rotateX = useTransform(sy, [-0.5, 0.5], [8, -8]);
+  const sx = useSpring(mx, { stiffness: 55, damping: 16 });
+  const sy = useSpring(my, { stiffness: 55, damping: 16 });
+  const mouseRY = useTransform(sx, [-0.5, 0.5], [-16, 16]);
+  const mouseRX = useTransform(sy, [-0.5, 0.5], [12, -12]);
   const heroRef = useRef(null);
-  const [logoIntro, setLogoIntro] = useState(true);
-
-  useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      setLogoIntro(false);
-      return undefined;
-    }
-    const t = window.setTimeout(() => setLogoIntro(false), LOGO_INTRO_MS);
-    return () => window.clearTimeout(t);
-  }, []);
 
   const onMouseMove = (e) => {
     const r = heroRef.current?.getBoundingClientRect();
@@ -81,33 +118,12 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-onyx/90 via-onyx/35 to-onyx/25" />
       </div>
 
-      <AnimatePresence>
-        {logoIntro && (
-          <motion.div
-            key="logo-intro"
-            className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 0.92 }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <motion.img
-              src="/logo.jpg"
-              alt=""
-              className="h-[min(58vw,300px)] w-[min(58vw,300px)] rounded-full object-cover shadow-[0_0_120px_rgba(249,115,22,0.5)] ring-2 ring-tiger/60"
-              initial={{ scale: 0.72, opacity: 0, filter: "blur(8px)" }}
-              animate={{ scale: [0.72, 1.1, 1], opacity: 1, filter: "blur(0px)" }}
-              transition={{ duration: 2.1, ease: [0.22, 1, 0.36, 1] }}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-14 px-4 py-20 sm:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:px-12">
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-4 py-20 sm:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14 lg:px-12">
         <div>
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.35 }}
+            transition={{ duration: 0.55, delay: 0.2 }}
           >
             <Eyebrow>Paulo Afonso — Bahia · Desde {SITE.founded}</Eyebrow>
           </motion.div>
@@ -119,7 +135,7 @@ const Hero = () => {
                   className="block drop-shadow-[0_4px_24px_rgba(0,0,0,0.65)]"
                   initial={{ y: "112%" }}
                   animate={{ y: 0 }}
-                  transition={{ duration: 0.85, delay: 0.45 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.85, delay: 0.3 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
                 >
                   {i === 1 ? <span className="text-tiger">{line}</span> : line}
                 </motion.span>
@@ -131,7 +147,7 @@ const Hero = () => {
             className="mt-6 max-w-xl text-base leading-relaxed text-zinc-200 sm:text-lg"
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.7 }}
+            transition={{ duration: 0.65, delay: 0.55 }}
           >
             Muay Thai e Boxe de verdade, no sangue quente do sertão baiano. A{" "}
             <strong className="text-zinc-50">Equipe Mendonça Júnior</strong> forma lutadores e pessoas desde{" "}
@@ -142,7 +158,7 @@ const Hero = () => {
             className="mt-9 flex flex-wrap items-center gap-4"
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.8 }}
+            transition={{ duration: 0.65, delay: 0.65 }}
           >
             <Link
               to="/matriculas"
@@ -162,7 +178,7 @@ const Hero = () => {
             className="mt-12 flex flex-wrap gap-8 border-t border-zinc-700/60 pt-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, delay: 1 }}
+            transition={{ duration: 0.7, delay: 0.85 }}
           >
             {[
               ["2015", "Ano de fundação"],
@@ -178,22 +194,12 @@ const Hero = () => {
         </div>
 
         <motion.div
-          className="relative mx-auto hidden aspect-square w-full max-w-md items-center justify-center lg:flex"
-          style={{ perspective: 900 }}
-          initial={{ opacity: 0, scale: 0.88 }}
-          animate={{ opacity: logoIntro ? 0 : 1, scale: logoIntro ? 0.88 : 1 }}
-          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+          className="order-first lg:order-none"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         >
-          <motion.div
-            className="animate-spin-slow absolute inset-0 rounded-full border border-dashed border-tiger/40"
-            style={{ rotateX, rotateY }}
-          />
-          <motion.img
-            src="/logo.jpg"
-            alt="Logo PA FIGHT TEAM — tigre, Muay Thai e Boxe"
-            className="h-[78%] w-[78%] rounded-full object-cover shadow-[0_0_80px_rgba(249,115,22,0.35)] ring-1 ring-tiger/40"
-            style={{ rotateX, rotateY }}
-          />
+          <Logo3D mouseRX={mouseRX} mouseRY={mouseRY} />
         </motion.div>
       </div>
 
