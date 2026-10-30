@@ -28,7 +28,7 @@ export default function AreaDoAluno() {
       <div className="mx-auto max-w-6xl">
         <Reveal className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-tiger">Área do aluno · demo</p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-tiger">Área do aluno</p>
             <h1 className="mt-2 font-display text-5xl uppercase tracking-wide text-zinc-50 sm:text-6xl">
               E aí, {user?.name?.split(" ")[0]}!
             </h1>
@@ -104,7 +104,7 @@ export default function AreaDoAluno() {
             <ReceiptText size={14} aria-hidden /> Histórico de pagamentos (local)
           </h3>
           {payments.length === 0 ? (
-            <p className="mt-6 border border-dashed border-zinc-800 p-8 text-center text-sm text-zinc-500">Nenhum pagamento demo.</p>
+            <p className="mt-6 border border-dashed border-zinc-800 p-8 text-center text-sm text-zinc-500">Nenhum pagamento registrado ainda.</p>
           ) : (
             <div className="mt-5 divide-y divide-zinc-800/80 border border-zinc-800/80">
               {payments.map((p) => (

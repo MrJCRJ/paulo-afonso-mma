@@ -1,19 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { findAccount, registerStudent } from "@/lib/authStore";
 
 const AuthContext = createContext(null);
 
-const USERS = {
-  "aluno@teste.com": {
-    password: "aluno123",
-    user: { id: "u1", name: "João Tigre Silva", email: "aluno@teste.com", role: "student" },
-  },
-  "admin@pafightteam.com": {
-    password: "pafight2015",
-    user: { id: "u0", name: "Mendonça Júnior", email: "admin@pafightteam.com", role: "admin" },
-  },
-};
-
-const STORAGE_KEY = "paft_demo_user";
+const SESSION_KEY = "paft_session_v1";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -21,37 +11,41 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(SESSION_KEY);
       if (raw) setUser(JSON.parse(raw));
     } catch {
-      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(SESSION_KEY);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const login = async (email, password) => {
-    const entry = USERS[String(email).trim().toLowerCase()];
-    if (!entry || entry.password !== password) {
-      throw new Error("E-mail ou senha inválidos (use os acessos demo).");
-    }
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entry.user));
-    setUser(entry.user);
-    return entry.user;
+  const persist = (next) => {
+    localStorage.setItem(SESSION_KEY, JSON.stringify(next));
+    setUser(next);
+    return next;
   };
 
-  const loginAs = (role) => {
-    const email = role === "admin" ? "admin@pafightteam.com" : "aluno@teste.com";
-    return login(email, USERS[email].password);
+  const login = async (email, password) => {
+    const entry = findAccount(email);
+    if (!entry || entry.password !== String(password)) {
+      throw new Error("E-mail ou senha inválidos.");
+    }
+    return persist({ ...entry.user });
+  };
+
+  const register = async (payload) => {
+    const created = registerStudent(payload);
+    return persist(created);
   };
 
   const logout = () => {
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(SESSION_KEY);
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, loginAs, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

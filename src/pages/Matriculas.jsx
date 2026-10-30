@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle2, Dumbbell, HeartPulse, UserRound } from "lucid
 import { PLANS, SITE } from "@/lib/siteConfig";
 import { enrollmentMessage, openWhatsApp } from "@/lib/whatsapp";
 import { demoStore } from "@/lib/demoStore";
+import { useAuth } from "@/context/AuthContext";
 import { Reveal, Eyebrow, SectionTitle } from "@/components/Reveal";
 import Seo from "@/components/Seo";
 
@@ -22,29 +23,58 @@ const Step = ({ icon: Icon, title, children }) => (
 );
 
 export default function Matriculas() {
+  const { register } = useAuth();
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
     birth_date: "",
+    password: "",
+    password2: "",
     modality: "Muay Thai",
     plan: "Mensal",
     experience: LEVELS[0],
     health: "",
   });
   const [result, setResult] = useState(null);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    const code = `PAFT-${Date.now().toString(36).toUpperCase()}`;
-    const enrollment = { id: code, ...form, status: "pending", created_at: new Date().toISOString() };
-    const list = demoStore.getEnrollments();
-    demoStore.setEnrollments([enrollment, ...list]);
-    openWhatsApp(enrollmentMessage(form));
-    setResult({ code });
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setError("");
+    if (form.password !== form.password2) {
+      setError("As senhas não coincidem.");
+      return;
+    }
+    setBusy(true);
+    try {
+      await register({
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        phone: form.phone,
+      });
+      const code = `PAFT-${Date.now().toString(36).toUpperCase()}`;
+      const { password, password2, ...publicForm } = form;
+      const enrollment = {
+        id: code,
+        ...publicForm,
+        status: "pending",
+        created_at: new Date().toISOString(),
+      };
+      const list = demoStore.getEnrollments();
+      demoStore.setEnrollments([enrollment, ...list]);
+      openWhatsApp(enrollmentMessage(publicForm));
+      setResult({ code });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err) {
+      setError(err?.message || "Não foi possível concluir o cadastro.");
+    } finally {
+      setBusy(false);
+    }
   };
 
   if (result) {
@@ -58,11 +88,10 @@ export default function Matriculas() {
           className="w-full max-w-lg border border-tiger/50 bg-[#121215] p-8 text-center sm:p-12"
         >
           <CheckCircle2 size={56} className="mx-auto text-tiger" />
-          <h1 className="mt-5 font-display text-5xl uppercase tracking-wide text-zinc-50">Pedido no WhatsApp!</h1>
+          <h1 className="mt-5 font-display text-5xl uppercase tracking-wide text-zinc-50">Cadastro criado!</h1>
           <p className="mt-3 text-sm leading-relaxed text-zinc-400">
             Abrimos o WhatsApp com seus dados, <strong className="text-zinc-100">{form.name.split(" ")[0]}</strong>.
-            Confirme o envio da mensagem para a equipe fechar sua vaga em{" "}
-            <strong className="text-tiger">{form.modality}</strong>.
+            Confirme o envio da mensagem. Sua conta já está pronta — entre com o e-mail e a senha que cadastrou.
           </p>
           <div className="mt-6 border border-dashed border-zinc-700 bg-onyx p-4">
             <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-zinc-500">Código de referência</p>
@@ -70,16 +99,16 @@ export default function Matriculas() {
           </div>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
             <Link
-              to="/pagamentos"
+              to="/login"
               className="inline-flex items-center justify-center gap-2 bg-tiger px-6 py-3 text-xs font-bold uppercase tracking-wider text-onyx hover:bg-orange-400"
             >
-              Ver planos / Pix <ArrowRight size={14} />
+              Entrar <ArrowRight size={14} />
             </Link>
             <Link
-              to="/"
+              to="/area-do-aluno"
               className="inline-flex items-center justify-center border border-zinc-600 px-6 py-3 text-xs font-bold uppercase tracking-wider text-zinc-100 hover:border-tiger hover:text-tiger"
             >
-              Voltar ao início
+              Área do aluno
             </Link>
           </div>
         </motion.div>
@@ -89,24 +118,47 @@ export default function Matriculas() {
 
   return (
     <div className="bg-onyx px-4 pb-24 pt-28 sm:px-8 lg:px-12">
-      <Seo title="Matrículas" description={`Matricule-se no ${SITE.name}. Formulário abre WhatsApp com seus dados.`} />
+      <Seo title="Matrículas" description={`Matricule-se no ${SITE.name}. Crie sua conta e envie no WhatsApp.`} />
       <div className="mx-auto max-w-3xl">
         <Reveal>
           <Eyebrow>Matrículas abertas</Eyebrow>
           <SectionTitle className="mt-3">Entre para o bando</SectionTitle>
           <p className="mt-4 text-sm leading-relaxed text-zinc-400 sm:text-base">
-            Preencha seus dados e envie direto no WhatsApp do {SITE.name}. Nossa equipe confirma a turma e você já pode
-            treinar.
+            Crie sua conta, escolha modalidade/plano e envie no WhatsApp do {SITE.name}. Depois entre em{" "}
+            <Link to="/login" className="text-tiger hover:text-orange-300">
+              Entrar
+            </Link>{" "}
+            com o mesmo e-mail e senha.
           </p>
         </Reveal>
 
         <form onSubmit={submit} className="mt-10 space-y-8 border border-zinc-800/80 bg-[#121215] p-6 sm:p-10">
-          <Step icon={UserRound} title="1. Seus dados">
+          <Step icon={UserRound} title="1. Seus dados e acesso">
             <div className="grid gap-4 sm:grid-cols-2">
               <input required className="field" placeholder="Nome completo" value={form.name} onChange={(e) => set("name", e.target.value)} />
-              <input required type="email" className="field" placeholder="E-mail" value={form.email} onChange={(e) => set("email", e.target.value)} />
+              <input required type="email" className="field" placeholder="E-mail" autoComplete="email" value={form.email} onChange={(e) => set("email", e.target.value)} />
               <input required className="field" placeholder="WhatsApp / Telefone" value={form.phone} onChange={(e) => set("phone", e.target.value)} />
               <input type="date" className="field text-zinc-400" value={form.birth_date} onChange={(e) => set("birth_date", e.target.value)} />
+              <input
+                required
+                type="password"
+                className="field"
+                placeholder="Senha (mín. 6)"
+                autoComplete="new-password"
+                minLength={6}
+                value={form.password}
+                onChange={(e) => set("password", e.target.value)}
+              />
+              <input
+                required
+                type="password"
+                className="field"
+                placeholder="Confirmar senha"
+                autoComplete="new-password"
+                minLength={6}
+                value={form.password2}
+                onChange={(e) => set("password2", e.target.value)}
+              />
             </div>
           </Step>
 
@@ -170,11 +222,18 @@ export default function Matriculas() {
             </div>
           </Step>
 
+          {error && <p className="text-center text-sm text-red-400">{error}</p>}
+
           <button
             type="submit"
-            className="flex w-full items-center justify-center gap-2 bg-tiger py-4 text-sm font-bold uppercase tracking-wider text-onyx transition-all duration-300 hover:bg-orange-400"
+            disabled={busy}
+            className="flex w-full items-center justify-center gap-2 bg-tiger py-4 text-sm font-bold uppercase tracking-wider text-onyx transition-all duration-300 hover:bg-orange-400 disabled:opacity-60"
           >
-            Enviar no WhatsApp <ArrowRight size={16} />
+            {busy ? "Cadastrando…" : (
+              <>
+                Criar conta e enviar no WhatsApp <ArrowRight size={16} />
+              </>
+            )}
           </button>
         </form>
       </div>
