@@ -1,10 +1,17 @@
 import { motion } from "framer-motion";
+import { LOGO_NAV } from "@/lib/siteConfig";
 
 /**
  * Medalhão 3D extrudado da logo.
  * @param {"nav"|"hero"} variant
  */
-export default function LogoMedallion({ variant = "nav", mouseRX, mouseRY, className = "" }) {
+export default function LogoMedallion({
+  variant = "nav",
+  mouseRX,
+  mouseRY,
+  className = "",
+  src = LOGO_NAV,
+}) {
   const isNav = variant === "nav";
   const depth = isNav ? 12 : 22;
   const step = isNav ? 1.15 : 2.4;
@@ -68,7 +75,7 @@ export default function LogoMedallion({ variant = "nav", mouseRX, mouseRY, class
             return (
               <img
                 key={i}
-                src="/logo.jpg"
+                src={src}
                 alt={isFront ? "Logo PA FIGHT TEAM" : ""}
                 aria-hidden={!isFront}
                 draggable={false}

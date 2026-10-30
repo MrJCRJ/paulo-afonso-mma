@@ -2,10 +2,9 @@ import { Link } from "react-router-dom";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight, ChevronRight, Flame, MapPin, Medal, ShieldCheck } from "lucide-react";
-import { SITE, IMG, HERO_VIDEO, SCHEDULE, RANK_COLORS, getGrade, gradeLabel } from "@/lib/siteConfig";
+import { SITE, IMG, HERO_VIDEO, LOGO_VIDEO, LOGO_HERO_STILL, SCHEDULE, RANK_COLORS, getGrade, gradeLabel } from "@/lib/siteConfig";
 import { demoStore } from "@/lib/demoStore";
 import { Reveal, Eyebrow, SectionTitle, RankChip } from "@/components/Reveal";
-import LogoMedallion from "@/components/LogoMedallion";
 import Seo from "@/components/Seo";
 
 const heroLines = ["FORJA DE", "GUERREIROS"];
@@ -146,12 +145,32 @@ const Hero = () => {
         </div>
 
         <motion.div
-          className="hidden lg:block"
+          className="relative mx-auto hidden aspect-square w-full max-w-md lg:block"
+          style={{ perspective: 1200 }}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         >
-          <LogoMedallion variant="hero" mouseRX={mouseRX} mouseRY={mouseRY} />
+          <div className="pointer-events-none absolute inset-[10%] rounded-full bg-tiger/30 blur-3xl" aria-hidden />
+          <motion.div
+            className="relative h-full w-full overflow-hidden rounded-full shadow-[0_0_80px_rgba(249,115,22,0.4)] ring-1 ring-tiger/50"
+            style={{ rotateX: mouseRX, rotateY: mouseRY, transformStyle: "preserve-3d" }}
+            animate={{ y: [0, -12, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <video
+              className="h-full w-full scale-110 object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster={LOGO_HERO_STILL}
+              aria-label="Logo PA FIGHT TEAM animada"
+            >
+              <source src={LOGO_VIDEO} type="video/mp4" />
+            </video>
+          </motion.div>
         </motion.div>
       </div>
 

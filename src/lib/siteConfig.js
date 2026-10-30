@@ -135,6 +135,11 @@ export const IMG = {
 /** Hero da Home: loop curto mudo (comprimido a partir do treino da academia). */
 export const HERO_VIDEO = "/videos/hero-treino.mp4";
 
+/** Logo cinematográfica (Nano Banana) + loop montado em ffmpeg. */
+export const LOGO_VIDEO = "/videos/logo-loop.mp4";
+export const LOGO_HERO_STILL = "/imgs/logo-anim/hero-logo.jpg";
+export const LOGO_NAV = "/imgs/logo-anim/nav-logo.jpg";
+
 /** Vídeos locais (reel IG + vídeo do cliente) — reprodução na galeria. */
 export const LOCAL_VIDEOS = [
   {

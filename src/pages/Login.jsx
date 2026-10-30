@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
+import { LOGO_NAV } from "@/lib/siteConfig";
 import Seo from "@/components/Seo";
 
 export default function Login({ redirectAfter }) {
@@ -38,7 +39,7 @@ export default function Login({ redirectAfter }) {
         className="w-full max-w-md border border-zinc-800/80 bg-[#121215] p-8 sm:p-10"
       >
         <div className="text-center">
-          <img src="/logo.jpg" alt="" className="mx-auto h-20 w-20 rounded-full object-cover ring-1 ring-tiger/50" />
+          <img src={LOGO_NAV} alt="" className="mx-auto h-20 w-20 rounded-full object-cover ring-1 ring-tiger/50" />
           <h1 className="mt-4 font-display text-4xl uppercase tracking-wide text-zinc-50">Entrar</h1>
           <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.24em] text-tiger">Área do aluno e equipe</p>
         </div>

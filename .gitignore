@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 .vercel
 .env*
+
+# Frames PNG pesados da logo (usamos jpg + mp4 no site)
+public/imgs/logo-anim/frame-*.png
+public/imgs/logo-anim/nav-logo.png
