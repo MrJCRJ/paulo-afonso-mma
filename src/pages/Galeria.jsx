@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X } from "lucide-react";
+import { Play, X } from "lucide-react";
 import { demoStore } from "@/lib/demoStore";
+import { IG_VIDEO_COVERS, SITE } from "@/lib/siteConfig";
 import { Reveal, Eyebrow, SectionTitle } from "@/components/Reveal";
 import Seo from "@/components/Seo";
 
@@ -26,7 +27,36 @@ export default function Galeria() {
           </SectionTitle>
         </Reveal>
 
-        <div className="mt-8 flex flex-wrap gap-2" role="tablist" aria-label="Filtros da galeria">
+        <Reveal delay={0.08}>
+          <div className="mt-10">
+            <Eyebrow>Vídeos · Instagram</Eyebrow>
+            <p className="mt-2 max-w-2xl text-sm text-zinc-400">
+              O Instagram bloqueia baixar os reels daqui. Usamos as capas e o clique abre o @{SITE.instagram} para assistir.
+            </p>
+            <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+              {IG_VIDEO_COVERS.map((v) => (
+                <a
+                  key={v.id}
+                  href={v.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative aspect-[3/4] overflow-hidden border border-zinc-800/80"
+                >
+                  <img src={v.cover} alt={v.title} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+                  <span className="absolute inset-0 bg-onyx/35" />
+                  <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-zinc-50">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-tiger text-onyx">
+                      <Play size={22} fill="currentColor" />
+                    </span>
+                    <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em]">{v.title}</span>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
+        <div className="mt-12 flex flex-wrap gap-2" role="tablist" aria-label="Filtros da galeria">
           {CATEGORIES.map((c) => (
             <button
               key={c}

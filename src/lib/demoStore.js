@@ -1,9 +1,9 @@
 import { SEED_GRADUATIONS, SEED_GALLERY, SEED_POSTS, SEED_PAYMENTS_ALUNO } from "./seedData";
 
 const KEYS = {
-  graduations: "paft_graduations_v2",
+  graduations: "paft_graduations_v3",
   gallery: "paft_gallery_v2",
-  posts: "paft_posts_v2",
+  posts: "paft_posts_v3",
   payments: "paft_payments",
   enrollments: "paft_enrollments",
 };
