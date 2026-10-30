@@ -83,16 +83,6 @@ export const NIVEIS = [
   "Grão-mestre",
 ];
 
-export const GRADUATION_HISTORY = {
-  title: "Prajied ou Kruang?",
-  lead: "O nome correto da corda de graduação no braço é Prajied. No Brasil muita gente ainda chama de Kruang.",
-  paragraphs: [
-    "Na Tailândia o prajied nasceu como amuleto de proteção — pedaço de tecido abençoado, muitas vezes com um pequeno kruang (adorno/sagrado) no cordão — e não como “faixa” de academia. Lutadores experientes podem usar prajied branco sem qualquer relação com nível técnico.",
-    "Fora da Tailândia, especialmente no Brasil, o prajied passou a funcionar como graduação (o equivalente didático à faixa). O Kruang, em sentido estrito, é o adorno/equipe; no dia a dia brasileiro os dois nomes acabam misturados nos quadros “KRUANG / PRAJIED”.",
-    "O PA FIGHT TEAM segue o quadro CBMT/CMTB: 11 prajieds nas cores da bandeira tailandesa, com ponta entre um grau e o seguinte, e títulos a partir de Monitor. Critérios de exame e carência são definidos na academia.",
-  ],
-};
-
 export function getGrade(idOrFaixa) {
   return (
     MUAY_THAI_GRADES.find((g) => g.id === idOrFaixa) ||

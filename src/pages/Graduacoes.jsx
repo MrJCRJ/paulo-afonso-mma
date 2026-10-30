@@ -5,7 +5,6 @@ import {
   MUAY_THAI_GRADES,
   NIVEIS,
   RANK_COLORS,
-  GRADUATION_HISTORY,
   getGrade,
   gradeLabel,
 } from "@/lib/siteConfig";
@@ -57,30 +56,13 @@ export default function Graduacoes() {
       />
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <Eyebrow>Muay Thai · KRUANG / PRAJIED · CBMT</Eyebrow>
-          <SectionTitle className="mt-3">Graduação no braço</SectionTitle>
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-zinc-400">
-            O nome correto é <strong className="text-zinc-100">Prajied</strong> (corda no bíceps). No Brasil o quadro
-            costuma aparecer como <strong className="text-zinc-100">Kruang / Prajied</strong>. Este site usa o sistema{" "}
-            <strong className="text-zinc-100">CBMT/CMTB</strong>: cor do prajied, ponta e título.
-          </p>
+          <Eyebrow>Muay Thai · CBMT</Eyebrow>
+          <SectionTitle className="mt-3">Graduação</SectionTitle>
         </Reveal>
 
         <Reveal delay={0.08}>
-          <article className="mt-10 border border-zinc-800/80 bg-[#121215] p-6 sm:p-8">
-            <Eyebrow>{GRADUATION_HISTORY.title}</Eyebrow>
-            <p className="mt-3 text-sm font-semibold text-zinc-100">{GRADUATION_HISTORY.lead}</p>
-            <div className="mt-4 space-y-3 text-sm leading-relaxed text-zinc-400">
-              {GRADUATION_HISTORY.paragraphs.map((p) => (
-                <p key={p.slice(0, 24)}>{p}</p>
-              ))}
-            </div>
-          </article>
-        </Reveal>
-
-        <Reveal delay={0.1}>
           <div className="mt-12">
-            <Eyebrow>Quadro completo · 11 prajieds</Eyebrow>
+            <Eyebrow>Quadro · 11 prajieds</Eyebrow>
             <div className="mt-4 overflow-x-auto border border-zinc-800/80">
               <table className="min-w-full text-left text-sm">
                 <thead className="bg-[#0C0C0F] font-mono text-[10px] uppercase tracking-[0.18em] text-tiger">
