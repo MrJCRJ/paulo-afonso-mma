@@ -132,6 +132,9 @@ export const IMG = {
   atleta: "/imgs/cliente/foto-05.jpg",
 };
 
+/** Hero da Home: loop curto mudo (comprimido a partir do treino da academia). */
+export const HERO_VIDEO = "/videos/hero-treino.mp4";
+
 /** Vídeos locais (reel IG + vídeo do cliente) — reprodução na galeria. */
 export const LOCAL_VIDEOS = [
   {
