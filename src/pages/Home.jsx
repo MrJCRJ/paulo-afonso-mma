@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight, ChevronRight, Flame, MapPin, Medal, ShieldCheck } from "lucide-react";
-import { SITE, IMG, HERO_VIDEO, LOGO_VIDEO, LOGO_HERO_STILL, SCHEDULE, RANK_COLORS, getGrade, gradeLabel } from "@/lib/siteConfig";
+import { SITE, IMG, HERO_VIDEO, LOGO_HERO_STILL, SCHEDULE, RANK_COLORS, getGrade, gradeLabel } from "@/lib/siteConfig";
 import { demoStore } from "@/lib/demoStore";
 import { Reveal, Eyebrow, SectionTitle, RankChip } from "@/components/Reveal";
 import Seo from "@/components/Seo";
@@ -29,28 +29,74 @@ const Marquee = () => {
   );
 };
 
-const Hero = () => {
+/** Logo 2D cinematográfica com tilt 3D pelo mouse (sem troca de frames / sem boca). */
+const InteractiveLogo = () => {
+  const ref = useRef(null);
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 55, damping: 16 });
-  const sy = useSpring(my, { stiffness: 55, damping: 16 });
-  const mouseRY = useTransform(sx, [-0.5, 0.5], [-16, 16]);
-  const mouseRX = useTransform(sy, [-0.5, 0.5], [12, -12]);
-  const heroRef = useRef(null);
+  const sx = useSpring(mx, { stiffness: 120, damping: 18, mass: 0.4 });
+  const sy = useSpring(my, { stiffness: 120, damping: 18, mass: 0.4 });
+  const rotateY = useTransform(sx, [-0.5, 0.5], [-32, 32]);
+  const rotateX = useTransform(sy, [-0.5, 0.5], [26, -26]);
+  const glareBg = useTransform([sx, sy], ([x, y]) => {
+    const px = 50 + x * 100;
+    const py = 50 + y * 100;
+    return `radial-gradient(circle at ${px}% ${py}%, rgba(255,255,255,0.38) 0%, transparent 42%), linear-gradient(135deg, rgba(255,255,255,0.14) 0%, transparent 42%, rgba(0,0,0,0.38) 100%)`;
+  });
 
-  const onMouseMove = (e) => {
-    const r = heroRef.current?.getBoundingClientRect();
+  const onMove = (e) => {
+    const r = ref.current?.getBoundingClientRect();
     if (!r) return;
     mx.set((e.clientX - r.left) / r.width - 0.5);
     my.set((e.clientY - r.top) / r.height - 0.5);
   };
 
+  const onLeave = () => {
+    mx.set(0);
+    my.set(0);
+  };
+
   return (
-    <section
-      ref={heroRef}
-      onMouseMove={onMouseMove}
-      className="grain relative flex min-h-screen items-center overflow-hidden bg-onyx pt-16"
+    <div
+      ref={ref}
+      className="relative mx-auto hidden aspect-square w-full max-w-md cursor-grab active:cursor-grabbing lg:block"
+      style={{ perspective: 1400 }}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
     >
+      <div className="pointer-events-none absolute inset-[8%] rounded-full bg-tiger/35 blur-3xl" aria-hidden />
+      <motion.div
+        className="relative h-full w-full"
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        initial={{ opacity: 0, scale: 0.92 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.85, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <div
+          className="absolute -inset-[3%] rounded-full bg-[#9a3412]"
+          style={{ transform: "translateZ(-18px)" }}
+          aria-hidden
+        />
+        <div className="relative overflow-hidden rounded-full shadow-[0_30px_70px_rgba(0,0,0,0.55),0_0_90px_rgba(249,115,22,0.35)] ring-1 ring-tiger/55">
+          <img
+            src={LOGO_HERO_STILL}
+            alt="Logo PA FIGHT TEAM"
+            className="h-full w-full select-none object-cover"
+            draggable={false}
+          />
+          <motion.div className="pointer-events-none absolute inset-0" style={{ background: glareBg }} aria-hidden />
+        </div>
+      </motion.div>
+      <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.22em] text-zinc-500">
+        Mova o mouse sobre a logo
+      </p>
+    </div>
+  );
+};
+
+const Hero = () => {
+  return (
+    <section className="grain relative flex min-h-screen items-center overflow-hidden bg-onyx pt-16">
       <div className="absolute inset-0">
         <video
           className="h-full w-full scale-105 object-cover"
@@ -144,34 +190,7 @@ const Hero = () => {
           </motion.div>
         </div>
 
-        <motion.div
-          className="relative mx-auto hidden aspect-square w-full max-w-md lg:block"
-          style={{ perspective: 1200 }}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <div className="pointer-events-none absolute inset-[10%] rounded-full bg-tiger/30 blur-3xl" aria-hidden />
-          <motion.div
-            className="relative h-full w-full overflow-hidden rounded-full shadow-[0_0_80px_rgba(249,115,22,0.4)] ring-1 ring-tiger/50"
-            style={{ rotateX: mouseRX, rotateY: mouseRY, transformStyle: "preserve-3d" }}
-            animate={{ y: [0, -12, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <video
-              className="h-full w-full scale-110 object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster={LOGO_HERO_STILL}
-              aria-label="Logo PA FIGHT TEAM animada"
-            >
-              <source src={LOGO_VIDEO} type="video/mp4" />
-            </video>
-          </motion.div>
-        </motion.div>
+        <InteractiveLogo />
       </div>
 
       <div className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2">
