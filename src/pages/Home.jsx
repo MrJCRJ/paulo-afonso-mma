@@ -5,6 +5,7 @@ import { ArrowRight, ChevronRight, Flame, MapPin, Medal, ShieldCheck } from "luc
 import { SITE, IMG, HERO_VIDEO, SCHEDULE, RANK_COLORS, getGrade, gradeLabel } from "@/lib/siteConfig";
 import { demoStore } from "@/lib/demoStore";
 import { Reveal, Eyebrow, SectionTitle, RankChip } from "@/components/Reveal";
+import LogoMedallion from "@/components/LogoMedallion";
 import Seo from "@/components/Seo";
 
 const heroLines = ["FORJA DE", "GUERREIROS"];
@@ -25,97 +26,6 @@ const Marquee = () => {
           {row}
         </div>
       </div>
-    </div>
-  );
-};
-
-/** Medalhão extrudado: várias fatias da logo no eixo Z = volume real (JPG sozinho não tem profundidade). */
-const LOGO_DEPTH = 22;
-const LOGO_STEP = 2.4;
-
-const Logo3D = ({ mouseRX, mouseRY }) => {
-  const layers = Array.from({ length: LOGO_DEPTH }, (_, i) => i);
-  return (
-    <div
-      className="relative mx-auto aspect-square w-full max-w-[280px] sm:max-w-sm lg:max-w-md"
-      style={{ perspective: 1600, perspectiveOrigin: "50% 45%" }}
-    >
-      <div className="pointer-events-none absolute inset-[8%] rounded-full bg-tiger/30 blur-3xl" aria-hidden />
-      <motion.div
-        className="relative flex h-full w-full items-center justify-center"
-        style={{ transformStyle: "preserve-3d", rotateX: mouseRX, rotateY: mouseRY }}
-      >
-        <motion.div
-          className="absolute inset-0 rounded-full border border-dashed border-tiger/40"
-          style={{ transform: "translateZ(-28px)" }}
-          animate={{ rotateZ: 360 }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-        />
-
-        <motion.div
-          className="relative h-[76%] w-[76%]"
-          style={{ transformStyle: "preserve-3d" }}
-          animate={{
-            rotateY: [-48, 48, -48],
-            rotateX: [14, -12, 14],
-            y: [0, -14, 0],
-          }}
-          transition={{ duration: 8.5, repeat: Infinity, ease: "easeInOut" }}
-        >
-          {/* Base / borda traseira da medalha */}
-          <span
-            className="absolute -inset-[3px] rounded-full bg-[#9a3412]"
-            style={{ transform: `translateZ(${-LOGO_DEPTH * LOGO_STEP - 1}px)` }}
-            aria-hidden
-          />
-          <span
-            className="absolute -inset-px rounded-full bg-tiger"
-            style={{ transform: `translateZ(${-LOGO_DEPTH * LOGO_STEP}px)` }}
-            aria-hidden
-          />
-
-          {layers.map((i) => {
-            const t = i / (LOGO_DEPTH - 1);
-            const isFront = i === 0;
-            const brightness = isFront ? 1 : 0.18 + (1 - t) * 0.5;
-            return (
-              <img
-                key={i}
-                src="/logo.jpg"
-                alt={isFront ? "Logo PA FIGHT TEAM — tigre, Muay Thai e Boxe" : ""}
-                aria-hidden={!isFront}
-                draggable={false}
-                className="absolute inset-0 h-full w-full rounded-full object-cover"
-                style={{
-                  transform: `translateZ(${-i * LOGO_STEP}px)`,
-                  filter: isFront ? "none" : `brightness(${brightness}) saturate(0.9)`,
-                  boxShadow: isFront ? "0 28px 55px rgba(0,0,0,0.6)" : undefined,
-                }}
-              />
-            );
-          })}
-
-          {/* Face frontal: luz especular que se move */}
-          <motion.span
-            className="pointer-events-none absolute inset-0 rounded-full"
-            style={{ transform: "translateZ(2px)" }}
-            animate={{
-              background: [
-                "linear-gradient(115deg, rgba(255,255,255,0.28) 0%, transparent 28%, transparent 70%, rgba(0,0,0,0.4) 100%)",
-                "linear-gradient(220deg, rgba(255,255,255,0.22) 0%, transparent 30%, transparent 65%, rgba(0,0,0,0.45) 100%)",
-                "linear-gradient(115deg, rgba(255,255,255,0.28) 0%, transparent 28%, transparent 70%, rgba(0,0,0,0.4) 100%)",
-              ],
-            }}
-            transition={{ duration: 8.5, repeat: Infinity, ease: "easeInOut" }}
-            aria-hidden
-          />
-          <span
-            className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-tiger/60"
-            style={{ transform: "translateZ(3px)" }}
-            aria-hidden
-          />
-        </motion.div>
-      </motion.div>
     </div>
   );
 };
@@ -241,7 +151,7 @@ const Hero = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         >
-          <Logo3D mouseRX={mouseRX} mouseRY={mouseRY} />
+          <LogoMedallion variant="hero" mouseRX={mouseRX} mouseRY={mouseRY} />
         </motion.div>
       </div>
 

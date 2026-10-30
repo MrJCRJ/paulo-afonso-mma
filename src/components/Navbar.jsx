@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Menu, X, LogOut, LayoutDashboard, User } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { SITE } from "@/lib/siteConfig";
+import LogoMedallion from "@/components/LogoMedallion";
 
 const links = [
   { to: "/", label: "Início" },
@@ -28,7 +29,7 @@ const Navbar = () => {
     <header className="glass fixed inset-x-0 top-0 z-50 border-b border-zinc-800/80">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-8 lg:px-12">
         <Link to="/" className="flex items-center gap-3" aria-label={`${SITE.name} — início`}>
-          <img src="/logo.jpg" alt="" className="h-10 w-10 rounded-full object-cover ring-1 ring-tiger/50" />
+          <LogoMedallion variant="nav" />
           <div className="leading-none">
             <span className="font-display text-xl tracking-widest text-zinc-50">PA FIGHT TEAM</span>
             <span className="block font-mono text-[9px] uppercase tracking-[0.24em] text-tiger">Muay Thai & Boxe</span>
